@@ -1,0 +1,67 @@
+class GuestsController < ApplicationController
+  def index
+    @guests = Guest.all
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def show
+    @guest = Guest.find(params[:id])
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def new
+    @guest = Guest.new
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def edit
+    @guest = Guest.find(params[:id])
+  end
+
+  def create
+    @guest = Guest.new(params[:guest])
+
+    respond_to do |format|
+      if @guest.save
+        format.html { redirect_to @guest, notice: 'Guest was successfully created.' }
+        format.json { render json: @guest, status: :created, location: @guest }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @guest.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update
+    @guest = Guest.find(params[:id])
+
+    respond_to do |format|
+      if @guest.update_attributes(params[:guest])
+        format.html { redirect_to @guest, notice: 'Guest was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @guest.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @guest = Guest.find(params[:id])
+    @guest.destroy
+
+    respond_to do |format|
+      format.html { redirect_to guests_url }
+      format.json { head :no_content }
+    end
+  end
+end
